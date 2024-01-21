@@ -39,10 +39,9 @@ const poll = {
   options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
   // This generates [0, 0, 0, 0]. More in the next section!
   answers: new Array(4).fill(0),
-  registerNewAnswer(type) {
-    const answer = prompt(
-      'What is your favourite programming language? \n0: JavaScript\n1: Python\n2: Rust\n3: C++'
-    );
+  registerNewAnswer() {
+    const answer = prompt(`${this.question}\n ${this.options.join('\n')}`);
+    console.log(typeof answer);
     const answerNum = answer ?? Number(answer);
     console.log(answerNum);
     answerNum >= 0 && answerNum <= 3
@@ -65,8 +64,35 @@ const displayResults = function (type = 'array') {
   }
 };
 
+const answers = [1, 5, 3, 9, 6, 1];
+displayResults.call({ answers }, 'string');
+displayResults.call({ answers });
+
 const displayResultsForPoll = displayResults.bind(poll);
 
 document
   .querySelector('.poll')
-  .addEventListener('click', poll.registerNewAnswer);
+  .addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+(function () {
+  console.log('This is my function that will be executed only once');
+})();
+
+(() =>
+  console.log('This is my arrow function that will be executed only once'))();
+
+/// closure
+
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
+};
+
+const bookTheTicket = secureBooking();
+bookTheTicket();
+bookTheTicket();
+bookTheTicket();
+bookTheTicket();
